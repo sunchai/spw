@@ -1,4 +1,4 @@
-package f2.spw;
+
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +21,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	private long score = 0;
 	private double difficulty = 0.1;
+	private int hp = 100;
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
@@ -48,6 +49,14 @@ public class GameEngine implements KeyListener, GameReporter{
 		gp.sprites.add(e);
 		enemies.add(e);
 	}
+
+	public void lifePoint(){
+		hp = 100;
+	}
+	
+	public int getHp(){
+		return hp;
+	}
 	
 	private void process(){
 		if(Math.random() < difficulty){
@@ -62,7 +71,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				score += 520000;
+				score += 1000;
 			}
 		}
 		
@@ -73,7 +82,8 @@ public class GameEngine implements KeyListener, GameReporter{
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				die();
+				minusHp();
+				e.hited();
 				return;
 			}
 		}
@@ -81,6 +91,12 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	public void die(){
 		timer.stop();
+	}
+	
+	public void minusHp(){
+		hp -= 20;
+			if ( hp <= 0)
+				die();
 	}
 	
 	void controlVehicle(KeyEvent e) {

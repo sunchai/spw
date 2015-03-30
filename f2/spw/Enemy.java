@@ -1,4 +1,3 @@
-package f2.spw;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -10,6 +9,7 @@ public class Enemy extends Sprite{
 	
 	private int step = 8;
 	private boolean alive = true;
+	;
 	
 	public Enemy(int x, int y) {
 		super(x, y, 5, 10);
@@ -38,6 +38,10 @@ public class Enemy extends Sprite{
 	
 	public boolean isAlive(){
 		return alive;
+	}
+	
+	public void hited(){
+		this.alive=false;
 	}
 	
 }

@@ -1,4 +1,4 @@
-package f2.spw;
+
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -17,7 +17,7 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
-		big.setBackground(Color.GREEN);
+		big.setBackground(Color.GRAY);
 	}
 
 	public void updateGameUI(GameReporter reporter){
@@ -25,6 +25,7 @@ public class GamePanel extends JPanel {
 		
 		big.setColor(Color.WHITE);		
 		big.drawString(String.format("%08d", reporter.getScore()), 300, 20);
+		big.drawString(String.format("HP SpaceShip %03d", reporter.getHp()), 150, 40);
 		for(Sprite s : sprites){
 			s.draw(big);
 		}
