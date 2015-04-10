@@ -22,6 +22,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private long score = 0;
 	private double difficulty = 0.1;
 	private int hp = 100;
+	private long count = 0;
 	
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
@@ -78,9 +79,15 @@ public class GameEngine implements KeyListener, GameReporter{
 			
 			}
 			if(e.isHit()){
-				
-				score += 20;
-		
+				combo ++;
+				if(combo>3){
+					score += 20;
+					count += 20;
+				}
+			else {
+				score += 10;
+				count += 10;
+				}
 				
 			}
 		}
@@ -106,6 +113,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(er.intersects(vr)){
 				e.hited();
 				minus();
+				combo = 0;
 				
 				return;
 			}
@@ -175,6 +183,11 @@ public class GameEngine implements KeyListener, GameReporter{
 		Bullet b = new Bullet((v.x) + (v.width/2) - 5, v.y);
 		gp.sprites.add(b);
 		bullets.add(b);
+	}
+
+
+	public int getCombo(){
+		return combo;
 	}
 	
 	@Override

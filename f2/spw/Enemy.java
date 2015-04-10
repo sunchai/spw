@@ -41,7 +41,7 @@ public class Enemy extends Sprite{
 	}
 	
 	public void hited(){
-		this.alive=false;
+		this.alive = false;
 	}
 
 	public boolean isHit() {
@@ -49,7 +49,7 @@ public class Enemy extends Sprite{
 	}
 	
 	public void getHit(){
-		this.hit=true;
+		this.hit = true;
 		this.alive = false;
 	}
 	
