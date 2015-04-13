@@ -23,6 +23,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private double difficulty = 0.1;
 	private int hp = 100;
 	private long count = 0;
+	private int lp = 0;
 	
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
@@ -35,6 +36,8 @@ public class GameEngine implements KeyListener, GameReporter{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 		difficulty += 0.4;
+		check();
+		count = 0 ;
 		
 			}
 		});
@@ -80,7 +83,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			}
 			if(e.isHit()){
 				combo ++;
-				if(combo>3){
+				if(combo>10){
 					score += 20;
 					count += 20;
 				}
@@ -138,9 +141,15 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	}
 	public void die(){
-	
+		if(lp >=1){
+			lifePoint();
+			lp -=1;
+		}
+		else {
+			
 		timer.stop();
 		timercheck.stop();
+		}
 		
 	}
 	
@@ -168,7 +177,11 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 	}
 	
-	
+	public int getLp(){
+		//if(lp == true)
+		
+		return lp;
+	}
 
 	
 	public int getHp(){
@@ -189,6 +202,19 @@ public class GameEngine implements KeyListener, GameReporter{
 	public int getCombo(){
 		return combo;
 	}
+
+	public void check(){
+		if(count >= 500){
+			lp += 1;
+		}
+		if(count < 500 && count >= 250){
+			lp +=1;
+		}
+		if(count < 250 && count >= 100){
+			hp = 100;
+		}
+
+	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -206,7 +232,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		//do nothing		
 	}
 	
-	//public void check(int score){
-		
+	
+					
 	
 }
