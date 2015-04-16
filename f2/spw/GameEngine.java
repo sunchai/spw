@@ -24,6 +24,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private int hp = 100;
 	private long count = 0;
 	private int lp = 0;
+	private int nuclear = 0;
 	
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
@@ -173,6 +174,11 @@ public class GameEngine implements KeyListener, GameReporter{
 		case KeyEvent.VK_SPACE:
 			fire();
 			break;
+		case KeyEvent.VK_S:
+			nuclears();
+			break;
+			
+			
 	
 		}
 	}
@@ -181,6 +187,11 @@ public class GameEngine implements KeyListener, GameReporter{
 		//if(lp == true)
 		
 		return lp;
+	}
+
+	public int getNc(){
+		//if(nuclear == true)
+		return nuclear;
 	}
 
 	
@@ -205,6 +216,7 @@ public class GameEngine implements KeyListener, GameReporter{
 
 	public void check(){
 		if(count >= 500){
+			nuclear +=1;
 			lp += 1;
 		}
 		if(count < 500 && count >= 250){
@@ -215,7 +227,16 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 
 	}
+	 public void nuclears(){
+		if(nuclear >=1 ){
+		nuclear -=1;
+		for(Enemy e : enemies){
+			e.getHit();
+			}
+		}
+	}
 	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		controlVehicle(e);

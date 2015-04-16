@@ -28,6 +28,7 @@ public class GamePanel extends JPanel {
 		big.drawString(String.format("HP SpaceShip %03d", reporter.getHp()), 150, 40);
 		big.drawString(String.format("Combo %03d", reporter.getCombo()), 40, 20);
 		big.drawString(String.format("Life %03d", reporter.getLp()), 40, 40);
+		big.drawString(String.format("Nuclear %03d", reporter.getNc()), 40, 60);
 		for(Sprite s : sprites){
 			s.draw(big);
 		}

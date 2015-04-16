@@ -6,5 +6,6 @@ public interface GameReporter {
 	int getHp();
 	int getCombo();
 	int getLp();
+	int getNc();
 
 }
