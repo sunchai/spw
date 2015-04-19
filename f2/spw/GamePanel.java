@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.awt.Toolkit;
+import java.awt.Image;
 
 import javax.swing.JPanel;
 
@@ -18,6 +20,9 @@ public class GamePanel extends JPanel {
 		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
 		big.setBackground(Color.GRAY);
+
+		//Image img = Toolkit.getDefaultToolkit().getImage("big.jpg");
+		//big.drawImage(img, 0,0,0,0 ,null);	
 	}
 
 	public void updateGameUI(GameReporter reporter){
