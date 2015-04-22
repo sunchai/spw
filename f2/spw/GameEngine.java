@@ -177,9 +177,12 @@ public class GameEngine implements KeyListener, GameReporter{
 		case KeyEvent.VK_S:
 			nuclears();
 			break;
-			
-			
-	
+		case KeyEvent.VK_UP:
+			v.upDown(-1);
+			break;
+		case KeyEvent.VK_DOWN:
+			v.upDown(+1);
+			break;		
 		}
 	}
 	

@@ -12,22 +12,24 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
 	
-	private BufferedImage bi;	
+	private BufferedImage bi;
+	private Image imgBackground;	
 	Graphics2D big;
 	ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 
 	public GamePanel() {
 		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
-		big.setBackground(Color.GRAY);
+		// big.setBackground(Color.GRAY);
+		big.drawImage(imgBackground, 0, 0, 400, 600,null);
 
 		//Image img = Toolkit.getDefaultToolkit().getImage("big.jpg");
 		//big.drawImage(img, 0,0,0,0 ,null);	
 	}
 
 	public void updateGameUI(GameReporter reporter){
-		big.clearRect(0, 0, 400, 600);
-		
+		//big.clearRect(0, 0, 400, 600);
+		big.drawImage(imgBackground, 0, 0, 400, 600,null);
 		big.setColor(Color.WHITE);		
 		big.drawString(String.format("%08d", reporter.getScore()), 300, 20);
 		big.drawString(String.format("HP SpaceShip %03d", reporter.getHp()), 150, 40);
@@ -36,8 +38,7 @@ public class GamePanel extends JPanel {
 		big.drawString(String.format("Nuclear %03d", reporter.getNc()), 40, 60);
 		for(Sprite s : sprites){
 			s.draw(big);
-		}
-		
+		}		
 		repaint();
 	}
 
