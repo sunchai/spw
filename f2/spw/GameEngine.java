@@ -15,6 +15,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	private ArrayList<Foeman> foemans = new ArrayList<Foeman>();
 	private SpaceShip v;	
 	private int combo=0;
 	private Timer timer;
@@ -47,6 +48,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 		process();
+		process2();
 			}
 		});
 		timer.setRepeats(true);
@@ -63,6 +65,13 @@ public class GameEngine implements KeyListener, GameReporter{
 		Enemy e = new Enemy((int)(Math.random()*390), 30);
 		gp.sprites.add(e);
 		enemies.add(e);
+	}
+
+
+	private void generateFoeman(){
+		Foeman es = new Foeman((int)(Math.random()*390), 30);
+		gp.sprites.add(es);
+		foemans.add(es);
 	}
 	
 	private void process(){
@@ -133,6 +142,77 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	
+	private void process2(){
+		if(Math.random() < difficulty/5){
+			generateFoeman();
+		}
+	
+		
+		Iterator<Foeman> es_iter = foemans.iterator();
+		while(es_iter.hasNext()){
+			Foeman eq = es_iter.next();
+			eq.proceed();
+			
+			if(!eq.isAlive()){
+				es_iter.remove();
+				gp.sprites.remove(eq);
+			
+			}
+			if(eq.isHit()){
+				combo ++;
+				if(combo>10){
+					score += 20;
+					count += 20;
+				}
+			else {
+				score += 10;
+				count += 10;
+				}
+				
+			}
+		}
+			
+
+		Iterator<Bullet> b_iter = bullets.iterator();
+		while(b_iter.hasNext()){
+			Bullet b = b_iter.next();
+			b.proceed();
+			
+			if(!b.isAlive()){
+				b_iter.remove();
+				gp.sprites.remove(b);
+			}
+		}
+		
+		gp.updateGameUI(this);
+		
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		Rectangle2D.Double br;
+		for(Foeman eqs : foemans){
+			er = eqs.getRectangle();
+			if(er.intersects(vr)){
+				eqs.hited();
+				minus();
+				combo = 0;
+				
+				return;
+			}
+
+			
+
+
+			for(Bullet b : bullets){
+				br = b.getRectangle();
+				if(br.intersects(er)){
+					eqs.getHit();
+					b.getHit();
+					return;
+				}				
+			}
+		}
+	}
+
 	
 	public void minus(){
 		hp -= 10 ;
@@ -236,6 +316,9 @@ public class GameEngine implements KeyListener, GameReporter{
 		for(Enemy e : enemies){
 			e.getHit();
 			}
+		for(Foeman ee : foemans){
+			ee.getHit();
+			}		
 		}
 	}
 	

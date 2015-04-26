@@ -1,0 +1,15 @@
+﻿ "*08"
+
+เพิ่มในส่วนของ ศัตรู อีก 1 ชนิดชื่อว่า Foeman
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	deleted:    Foeman.java
+#	modified:   GameEngine.java
+#	modified:   GamePanel.java
+#
+
