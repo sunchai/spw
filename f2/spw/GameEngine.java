@@ -14,6 +14,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
 		
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
+	private ArrayList<Foeman> foemans = new ArrayList<Foeman>();
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	private SpaceShip v;	
 	private int combo=0;
@@ -25,6 +26,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private long count = 0;
 	private int lp = 0;
 	private int nuclear = 0;
+
 	
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
@@ -47,6 +49,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 		process();
+		process2();
 			}
 		});
 		timer.setRepeats(true);
@@ -65,11 +68,16 @@ public class GameEngine implements KeyListener, GameReporter{
 		enemies.add(e);
 	}
 	
+
+	private void generateFoeman(){
+		Foeman es = new Foeman((int)(Math.random()*390), 30);
+		gp.sprites.add(es);
+		foemans.add(es);
+	}
 	private void process(){
 		if(Math.random() < difficulty){
 			generateEnemy();
 		}
-	
 	
 		
 		Iterator<Enemy> e_iter = enemies.iterator();
@@ -96,6 +104,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			}
 		}
 			
+
 		Iterator<Bullet> b_iter = bullets.iterator();
 		while(b_iter.hasNext()){
 			Bullet b = b_iter.next();
@@ -121,6 +130,10 @@ public class GameEngine implements KeyListener, GameReporter{
 				
 				return;
 			}
+
+			
+
+
 			for(Bullet b : bullets){
 				br = b.getRectangle();
 				if(br.intersects(er)){
@@ -132,6 +145,81 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 	}
 	
+
+
+
+	private void process2(){
+		if(Math.random() < difficulty/20){
+			generateFoeman();
+		}
+	
+		
+		Iterator<Foeman> es_iter = foemans.iterator();
+		while(es_iter.hasNext()){
+			Foeman eq = es_iter.next();
+			eq.proceed();
+			
+			if(!eq.isAlive()){
+				es_iter.remove();
+				gp.sprites.remove(eq);
+			
+			}
+			if(eq.isHit()){
+				combo ++;
+				if(combo>10){
+					score += 20;
+					count += 20;
+				}
+			else {
+				score += 10;
+				count += 10;
+				}
+				
+			}
+		}
+			
+
+		Iterator<Bullet> b_iter = bullets.iterator();
+		while(b_iter.hasNext()){
+			Bullet b = b_iter.next();
+			b.proceed();
+			
+			if(!b.isAlive()){
+				b_iter.remove();
+				gp.sprites.remove(b);
+			}
+		}
+		
+		gp.updateGameUI(this);
+		
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		Rectangle2D.Double br;
+		for(Foeman eqs : foemans){
+			er = eqs.getRectangle();
+			if(er.intersects(vr)){
+				eqs.hited();
+				minus();
+				combo = 0;
+				
+				return;
+			}
+
+			
+
+
+			for(Bullet b : bullets){
+				br = b.getRectangle();
+				if(br.intersects(er)){
+					eqs.getHit();
+					b.getHit();
+					return;
+				}				
+			}
+		}
+	}
+
+
 	
 	
 	public void minus(){
@@ -220,6 +308,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	public void check(){
 		if(count >= 500){
 			nuclear +=1;
+			
 			lp += 1;
 		}
 		if(count < 500 && count >= 250){
@@ -233,12 +322,19 @@ public class GameEngine implements KeyListener, GameReporter{
 	 public void nuclears(){
 		if(nuclear >=1 ){
 		nuclear -=1;
-		for(Enemy e : enemies){
+		for(Enemy e : enemies  ){
 			e.getHit();
 			}
+		for(Foeman ee : foemans  ){
+			ee.getHit();
+			}	
 		}
 	}
 	
+	
+
+
+
 
 	@Override
 	public void keyPressed(KeyEvent e) {
