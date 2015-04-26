@@ -18,7 +18,6 @@ public class GamePanel extends JPanel {
 	ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 
 	public GamePanel() {
-		imgBackground = Toolkit.getDefaultToolkit().getImage("oop.jpg");
 		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
 		// big.setBackground(Color.GRAY);
