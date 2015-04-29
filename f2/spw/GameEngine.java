@@ -16,6 +16,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	private ArrayList<Foeman> foemans = new ArrayList<Foeman>();
+	private ArrayList<Foeman2> foemans2 = new ArrayList<Foeman2>();
 	private SpaceShip v;	
 	private int combo=0;
 	private Timer timer;
@@ -49,6 +50,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		public void actionPerformed(ActionEvent arg0) {
 		process();
 		process2();
+		process3();
 			}
 		});
 		timer.setRepeats(true);
@@ -73,6 +75,13 @@ public class GameEngine implements KeyListener, GameReporter{
 		gp.sprites.add(es);
 		foemans.add(es);
 	}
+
+	private void generateFoeman2(){
+		Foeman2 es2 = new Foeman2((int)(Math.random()*390), 30);
+		gp.sprites.add(es2);
+		foemans2.add(es2);
+	}
+	
 	
 	private void process(){
 		if(Math.random() < difficulty){
@@ -143,7 +152,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	
 	private void process2(){
-		if(Math.random() < difficulty/5){
+		if(Math.random() < difficulty/10){
 			generateFoeman();
 		}
 	
@@ -190,6 +199,82 @@ public class GameEngine implements KeyListener, GameReporter{
 		Rectangle2D.Double er;
 		Rectangle2D.Double br;
 		for(Foeman eqs : foemans){
+			er = eqs.getRectangle();
+			if(er.intersects(vr)){
+				eqs.hited();
+				minus();
+				combo = 0;
+				
+				return;
+			}
+
+			
+
+
+			for(Bullet b : bullets){
+				br = b.getRectangle();
+				if(br.intersects(er)){
+					eqs.getHit();
+					b.getHit();
+					return;
+				}				
+			}
+		}
+	}
+
+
+
+
+private void process3(){
+		if(Math.random() < difficulty/20){
+			generateFoeman2();
+		}
+	
+		
+		Iterator<Foeman2> es_iter2 = foemans2.iterator();
+		while(es_iter2.hasNext()){
+			Foeman2 eq2 = es_iter2.next();
+			eq2.proceed();
+			
+			if(!eq2.isAlive()){
+				es_iter2.remove();
+				gp.sprites.remove(eq2);
+			
+			}
+			if(eq2.isHit()){
+				combo ++;
+				if(combo>10){
+					score += 20;
+					count += 20;
+					hp += 30;
+				}
+			else {
+				score += 10;
+				count += 10;
+				hp += 10;
+				}
+				
+			}
+		}
+			
+
+		Iterator<Bullet> b_iter = bullets.iterator();
+		while(b_iter.hasNext()){
+			Bullet b = b_iter.next();
+			b.proceed();
+			
+			if(!b.isAlive()){
+				b_iter.remove();
+				gp.sprites.remove(b);
+			}
+		}
+		
+		gp.updateGameUI(this);
+		
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		Rectangle2D.Double br;
+		for(Foeman2 eqs : foemans2){
 			er = eqs.getRectangle();
 			if(er.intersects(vr)){
 				eqs.hited();

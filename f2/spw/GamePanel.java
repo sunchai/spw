@@ -18,13 +18,11 @@ public class GamePanel extends JPanel {
 	ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 
 	public GamePanel() {
+		imgBackground = Toolkit.getDefaultToolkit().getImage("sds.jpg");
 		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
-		// big.setBackground(Color.GRAY);
+		//big.setBackground(Color.BLACK);
 		big.drawImage(imgBackground, 0, 0, 400, 600,null);
-
-		//Image img = Toolkit.getDefaultToolkit().getImage("big.jpg");
-		//big.drawImage(img, 0,0,0,0 ,null);	
 	}
 
 	public void updateGameUI(GameReporter reporter){
