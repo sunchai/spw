@@ -17,6 +17,8 @@ public class GameEngine implements KeyListener, GameReporter{
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	private ArrayList<Foeman> foemans = new ArrayList<Foeman>();
 	private ArrayList<Foeman2> foemans2 = new ArrayList<Foeman2>();
+	private ArrayList<Foeman3> foemans3 = new ArrayList<Foeman3>();
+	private ArrayList<Foeman4> foemans4 = new ArrayList<Foeman4>();
 	private SpaceShip v;	
 	private int combo=0;
 	private Timer timer;
@@ -51,6 +53,8 @@ public class GameEngine implements KeyListener, GameReporter{
 		process();
 		process2();
 		process3();
+		process4();
+		process5();
 			}
 		});
 		timer.setRepeats(true);
@@ -82,6 +86,17 @@ public class GameEngine implements KeyListener, GameReporter{
 		foemans2.add(es2);
 	}
 	
+	private void generateFoeman3(){
+		Foeman3 es3 = new Foeman3((int)(Math.random()*390), 30);
+		gp.sprites.add(es3);
+		foemans3.add(es3);
+	}
+
+	private void generateFoeman4(){
+		Foeman4 es4 = new Foeman4((int)(Math.random()*390), 30);
+		gp.sprites.add(es4);
+		foemans4.add(es4);
+	}	
 	
 	private void process(){
 		if(Math.random() < difficulty){
@@ -226,7 +241,7 @@ public class GameEngine implements KeyListener, GameReporter{
 
 
 private void process3(){
-		if(Math.random() < difficulty/20){
+		if(Math.random() < difficulty/80){
 			generateFoeman2();
 		}
 	
@@ -244,13 +259,11 @@ private void process3(){
 			if(eq2.isHit()){
 				combo ++;
 				if(combo>10){
-					score += 20;
-					count += 20;
+					
 					hp += 30;
 				}
 			else {
-				score += 10;
-				count += 10;
+				
 				hp += 10;
 				}
 				
@@ -298,7 +311,160 @@ private void process3(){
 		}
 	}
 
+
+private void process4(){
+		if(Math.random() < difficulty/80){
+			generateFoeman3();
+		}
 	
+		
+		Iterator<Foeman3> es_iter3 = foemans3.iterator();
+		while(es_iter3.hasNext()){
+			Foeman3 eq3 = es_iter3.next();
+			eq3.proceed();
+			
+			if(!eq3.isAlive()){
+				es_iter3.remove();
+				gp.sprites.remove(eq3);
+			
+			}
+			if(eq3.isHit()){
+				combo ++;
+				if(combo>10){
+					
+					nuclear+= 1;
+				}
+			else {
+				
+				nuclear+= 1;
+				}
+				
+			}
+		}
+			
+
+		Iterator<Bullet> b_iter = bullets.iterator();
+		while(b_iter.hasNext()){
+			Bullet b = b_iter.next();
+			b.proceed();
+			
+			if(!b.isAlive()){
+				b_iter.remove();
+				gp.sprites.remove(b);
+			}
+		}
+		
+		gp.updateGameUI(this);
+		
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		Rectangle2D.Double br;
+		for(Foeman3 eqs : foemans3){
+			er = eqs.getRectangle();
+			if(er.intersects(vr)){
+				eqs.hited();
+				minus();
+				combo = 0;
+				
+				return;
+			}
+
+			
+
+
+			for(Bullet b : bullets){
+				br = b.getRectangle();
+				if(br.intersects(er)){
+					eqs.getHit();
+					b.getHit();
+					return;
+				}				
+			}
+		}
+	}
+
+
+
+private void process5(){
+		if(Math.random() < difficulty/40){
+			generateFoeman4();
+		}
+	
+		
+		Iterator<Foeman4> es_iter4 = foemans4.iterator();
+		while(es_iter4.hasNext()){
+			Foeman4 eq4 = es_iter4.next();
+			eq4.proceed();
+			
+			if(!eq4.isAlive()){
+				es_iter4.remove();
+				gp.sprites.remove(eq4);
+			
+			}
+			if(eq4.isHit()){
+				combo ++;
+				if(combo>10){
+					
+					nuclear+= 1;
+				}
+			else {
+				
+				nuclear+= 1;
+				}
+				
+			}
+		}
+			
+
+		Iterator<Bullet> b_iter = bullets.iterator();
+		while(b_iter.hasNext()){
+			Bullet b = b_iter.next();
+			b.proceed();
+			
+			if(!b.isAlive()){
+				b_iter.remove();
+				gp.sprites.remove(b);
+			}
+		}
+		
+		gp.updateGameUI(this);
+		
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		Rectangle2D.Double br;
+		for(Foeman4 eqs : foemans4){
+			er = eqs.getRectangle();
+			if(er.intersects(vr)){
+				eqs.hited();
+				bossAtHP();
+				combo = 0;
+				
+				return;
+			}
+
+			
+
+
+			for(Bullet b : bullets){
+				br = b.getRectangle();
+				if(br.intersects(er)){
+					eqs.getHit();
+					b.getHit();
+					return;
+				}				
+			}
+		}
+	}
+
+
+
+	private void bossAtHP(){
+            hp -= 50;
+            if(hp <= 0){
+                die();
+                return;
+            }
+	}
 	public void minus(){
 		hp -= 10 ;
 		if(hp <= 0){
@@ -306,6 +472,10 @@ private void process3(){
 		}
 	
 	}
+
+	public void setHP(int hp){
+                this.hp = hp;
+        }
 	public void die(){
 		if(lp >=1){
 			lifePoint();
@@ -362,6 +532,11 @@ private void process3(){
 		return nuclear;
 	}
 
+	public void setNc(int nuclear){
+		//if(nuclear == true)
+		this.nuclear = nuclear;
+	}
+
 	
 	public int getHp(){
 		return hp;
@@ -371,6 +546,10 @@ private void process3(){
 		return score;
 	}
 	
+ 	public void setScore(long score){
+		this.score = score;
+	}
+
 	private void fire(){
 		Bullet b = new Bullet((v.x) + (v.width/2) - 5, v.y);
 		gp.sprites.add(b);
@@ -380,6 +559,10 @@ private void process3(){
 
 	public int getCombo(){
 		return combo;
+	}
+
+	public void setCombo(int combo){
+		this.combo = combo;
 	}
 
 	public void check(){

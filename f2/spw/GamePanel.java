@@ -7,6 +7,17 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.awt.Toolkit;
 import java.awt.Image;
+import javax.swing.*;
+
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
+
 
 import javax.swing.JPanel;
 
@@ -16,7 +27,7 @@ public class GamePanel extends JPanel {
 	private Image imgBackground;	
 	Graphics2D big;
 	ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-
+	
 	public GamePanel() {
 		imgBackground = Toolkit.getDefaultToolkit().getImage("sds.jpg");
 		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
@@ -45,5 +56,7 @@ public class GamePanel extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.drawImage(bi, null, 0, 0);
 	}
+
+
 
 }
