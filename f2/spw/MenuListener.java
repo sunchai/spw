@@ -44,9 +44,10 @@ public class MenuListener implements ActionListener{
             engine.setHP(100);
             engine.setCombo(0);
             engine.setNc(0);
+           
         }
         if(e.getSource() == menuStop){
-            engine.die();
+            engine.dies();
         }
     }
 }

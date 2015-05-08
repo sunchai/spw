@@ -6,8 +6,12 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.awt.event.WindowEvent;
 
 import javax.swing.Timer;
+
+import javax.swing.JOptionPane;
+
 
 
 public class GameEngine implements KeyListener, GameReporter{
@@ -20,15 +24,16 @@ public class GameEngine implements KeyListener, GameReporter{
 	private ArrayList<Foeman3> foemans3 = new ArrayList<Foeman3>();
 	private ArrayList<Foeman4> foemans4 = new ArrayList<Foeman4>();
 	private SpaceShip v;	
-	private int combo=0;
+	private int combo=0;   
 	private Timer timer;
 	private Timer timercheck;
 	private long score = 0;
-	private double difficulty = 0.1;
+	private double difficulty = 0.1; 
 	private int hp = 100;
-	private long count = 0;
+	private int count = 0;
 	private int lp = 0;
 	private int nuclear = 0;
+	private boolean G_over=false;
 	
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
@@ -36,6 +41,8 @@ public class GameEngine implements KeyListener, GameReporter{
 		this.v = v;		
 		
 		gp.sprites.add(v);
+
+
 		
 		timercheck = new Timer(20000, new ActionListener() {	
 		@Override
@@ -62,6 +69,22 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 	}
 	
+
+	
+	public void playAg(){
+		G_over = false;
+		lp = 0;
+		score = 0;
+	
+		
+		start();
+        setHP(100);
+        setCombo(0);
+        setNc(0);
+		
+	}
+
+
 	public void start(){
 		timer.start();
 		timercheck.start();
@@ -142,6 +165,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 		gp.updateGameUI(this);
 		
+		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		Rectangle2D.Double br;
@@ -210,6 +234,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 		gp.updateGameUI(this);
 		
+		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		Rectangle2D.Double br;
@@ -256,18 +281,7 @@ private void process3(){
 				gp.sprites.remove(eq2);
 			
 			}
-			if(eq2.isHit()){
-				combo ++;
-				if(combo>10){
-					
-					hp += 30;
-				}
-			else {
-				
-				hp += 10;
-				}
-				
-			}
+			
 		}
 			
 
@@ -291,23 +305,14 @@ private void process3(){
 			er = eqs.getRectangle();
 			if(er.intersects(vr)){
 				eqs.hited();
-				minus();
+				hp += 30;
 				combo = 0;
 				
 				return;
 			}
 
+
 			
-
-
-			for(Bullet b : bullets){
-				br = b.getRectangle();
-				if(br.intersects(er)){
-					eqs.getHit();
-					b.getHit();
-					return;
-				}				
-			}
 		}
 	}
 
@@ -328,18 +333,7 @@ private void process4(){
 				gp.sprites.remove(eq3);
 			
 			}
-			if(eq3.isHit()){
-				combo ++;
-				if(combo>10){
-					
-					nuclear+= 1;
-				}
-			else {
-				
-				nuclear+= 1;
-				}
-				
-			}
+			
 		}
 			
 
@@ -356,6 +350,7 @@ private void process4(){
 		
 		gp.updateGameUI(this);
 		
+		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		Rectangle2D.Double br;
@@ -363,23 +358,12 @@ private void process4(){
 			er = eqs.getRectangle();
 			if(er.intersects(vr)){
 				eqs.hited();
-				minus();
+				nuclear+= 1;
 				combo = 0;
 				
 				return;
 			}
 
-			
-
-
-			for(Bullet b : bullets){
-				br = b.getRectangle();
-				if(br.intersects(er)){
-					eqs.getHit();
-					b.getHit();
-					return;
-				}				
-			}
 		}
 	}
 
@@ -405,11 +389,13 @@ private void process5(){
 				combo ++;
 				if(combo>10){
 					
-					nuclear+= 1;
+					score += 1000;
+					count += 100;
 				}
 			else {
 				
-				nuclear+= 1;
+				score += 10000;
+					count += 100;
 				}
 				
 			}
@@ -428,6 +414,7 @@ private void process5(){
 		}
 		
 		gp.updateGameUI(this);
+		
 		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
@@ -462,7 +449,7 @@ private void process5(){
             hp -= 50;
             if(hp <= 0){
                 die();
-                return;
+                
             }
 	}
 	public void minus(){
@@ -476,18 +463,35 @@ private void process5(){
 	public void setHP(int hp){
                 this.hp = hp;
         }
+
 	public void die(){
-		if(lp >=1){
+		if(lp >=1){	
 			lifePoint();
 			lp -=1;
 		}
 		else {
-			
-		timer.stop();
+		
+		G_over = true;
+
 		timercheck.stop();
+		timer.stop();
+		
+
 		}
 		
 	}
+
+	public void dies(){
+		
+		
+		G_over = true;
+		timercheck.stop();
+		timer.stop();
+		JOptionPane.showMessageDialog(null,"Score: " +score +" Points");
+		
+		
+	}
+
 	
 	public void lifePoint(){
 			hp = 100;	
@@ -503,9 +507,9 @@ private void process5(){
 		case KeyEvent.VK_RIGHT:
 			v.move(1);
 			break;
-		/*case KeyEvent.VK_D:
+		case KeyEvent.VK_D:
 			difficulty += 0.1;
-			break;*/
+			break;
 		case KeyEvent.VK_SPACE:
 			fire();
 			break;
@@ -518,6 +522,12 @@ private void process5(){
 		case KeyEvent.VK_DOWN:
 			v.upDown(+1);
 			break;		
+		case KeyEvent.VK_ENTER:
+			if(G_over){
+				playAg();
+			}
+
+		
 		}
 	}
 	
@@ -538,6 +548,7 @@ private void process5(){
 	}
 
 	
+
 	public int getHp(){
 		return hp;
 	}
@@ -565,6 +576,7 @@ private void process5(){
 		this.combo = combo;
 	}
 
+
 	public void check(){
 		if(count >= 500){
 			nuclear +=1;
@@ -584,9 +596,16 @@ private void process5(){
 		for(Enemy e : enemies){
 			e.getHit();
 			}
-		for(Foeman ee : foemans){
-			ee.getHit();
-			}		
+		for(Foeman e2 : foemans){
+			e2.getHit();
+			}	
+		for(Foeman2 e3 : foemans2){
+			e3.getHit();
+			}
+		for(Foeman3 e4 : foemans3){
+			e4.getHit();
+			}	
+
 		}
 	}
 	

@@ -9,7 +9,6 @@ import java.awt.Toolkit;
 import java.awt.Image;
 import javax.swing.*;
 
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -45,12 +44,41 @@ public class GamePanel extends JPanel {
 		big.drawString(String.format("Combo %03d", reporter.getCombo()), 40, 20);
 		big.drawString(String.format("Life %03d", reporter.getLp()), 40, 40);
 		big.drawString(String.format("Nuclear %03d", reporter.getNc()), 40, 60);
+
+		if(reporter.getHp()==0){
+
+		big.clearRect(0, 0, 400, 600);
+		big.setColor(Color.WHITE);	
+
+		big.drawString("Game Over", 100, 250);
+		big.drawString(String.format("Your score is :%d",reporter.getScore()), 100, 300);
+		big.drawString("Please ENTER to Play again",100,490);
+		
+
+		}
+
 		for(Sprite s : sprites){
 			s.draw(big);
 		}		
 		repaint();
+
+
+
 	}
 
+	/*public void gameOver(GameReporter reporter){
+		big.clearRect(0, 0, 400, 600);
+		big.setColor(Color.WHITE);	
+		big.drawString("Game Over", 100, 250);
+		big.drawString(String.format("Your score is :%d",reporter.getScore()), 100, 300);
+		big.drawString("Please ENTER to Play again",100,490);
+		
+		repaint();
+
+	}*/
+	
+		
+		
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;

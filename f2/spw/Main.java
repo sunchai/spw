@@ -18,7 +18,7 @@ public class Main {
                 JMenu menuAbout = new JMenu("About");
                 JMenuItem menuRestart =new JMenuItem("Restart");
                 JMenuItem menuExit = new JMenuItem("Exit");
-                JMenuItem menuStop = new JMenuItem("Pause");
+                JMenuItem menuStop = new JMenuItem("Stop");
                 JMenuItem menuCredit = new JMenuItem("Credit");      
                
                 menuMain.add(menuRestart);
