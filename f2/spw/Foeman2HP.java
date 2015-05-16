@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.Image;
 
-public class Foeman2 extends Sprite{
+public class Foeman2HP extends Sprite{
 	public static final int Y_TO_FADE = 400;
 	public static final int Y_TO_DIE = 600;
 	
@@ -15,7 +15,7 @@ public class Foeman2 extends Sprite{
 	
 
 
-	public Foeman2(int x, int y) {
+	public Foeman2HP(int x, int y) {
 		super(x, y, 60, 90);
 		
 	}

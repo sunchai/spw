@@ -20,9 +20,9 @@ public class GameEngine implements KeyListener, GameReporter{
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	private ArrayList<Foeman> foemans = new ArrayList<Foeman>();
-	private ArrayList<Foeman2> foemans2 = new ArrayList<Foeman2>();
-	private ArrayList<Foeman3> foemans3 = new ArrayList<Foeman3>();
-	private ArrayList<Foeman4> foemans4 = new ArrayList<Foeman4>();
+	private ArrayList<Foeman2HP> foemans2 = new ArrayList<Foeman2HP>();
+	private ArrayList<Foeman3Nuclear> foemans3 = new ArrayList<Foeman3Nuclear>();
+	private ArrayList<Foeman4Boss> foemans4 = new ArrayList<Foeman4Boss>();
 	private SpaceShip v;	
 	private int combo=0;   
 	private Timer timer;
@@ -34,6 +34,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private int lp = 0;
 	private int nuclear = 0;
 	private boolean G_over=false;
+	private boolean G_Pause=false;
 	
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
@@ -47,7 +48,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		timercheck = new Timer(20000, new ActionListener() {	
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-		difficulty += 0.4;
+		difficulty += 0.1;
 		check();
 		count = 0 ;
 		
@@ -70,24 +71,38 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 
+
+
+
 	
 	public void playAg(){
 		G_over = false;
+		G_Pause = false;
 		lp = 0;
 		score = 0;
-	
-		
+
+		foemans4.clear();
+		foemans3.clear();
+		foemans2.clear();
+		foemans.clear();
+		enemies.clear();
+		gp.sprites.clear();
+
+		v.setPosition();
+		gp.sprites.add(v);
 		start();
         setHP(100);
         setCombo(0);
         setNc(0);
-		
+		timer.restart();
+		timercheck.restart();
 	}
 
 
 	public void start(){
 		timer.start();
 		timercheck.start();
+		
 	}
 	
 	private void generateEnemy(){
@@ -103,20 +118,20 @@ public class GameEngine implements KeyListener, GameReporter{
 		foemans.add(es);
 	}
 
-	private void generateFoeman2(){
-		Foeman2 es2 = new Foeman2((int)(Math.random()*390), 30);
+	private void generateFoeman2HP(){
+		Foeman2HP es2 = new Foeman2HP((int)(Math.random()*390), 30);
 		gp.sprites.add(es2);
 		foemans2.add(es2);
 	}
 	
-	private void generateFoeman3(){
-		Foeman3 es3 = new Foeman3((int)(Math.random()*390), 30);
+	private void generateFoeman3Nuclear(){
+		Foeman3Nuclear es3 = new Foeman3Nuclear((int)(Math.random()*390), 30);
 		gp.sprites.add(es3);
 		foemans3.add(es3);
 	}
 
-	private void generateFoeman4(){
-		Foeman4 es4 = new Foeman4((int)(Math.random()*390), 30);
+	private void generateFoeman4Boss(){
+		Foeman4Boss es4 = new Foeman4Boss((int)(Math.random()*390), 30);
 		gp.sprites.add(es4);
 		foemans4.add(es4);
 	}	
@@ -267,13 +282,13 @@ public class GameEngine implements KeyListener, GameReporter{
 
 private void process3(){
 		if(Math.random() < difficulty/80){
-			generateFoeman2();
+			generateFoeman2HP();
 		}
 	
 		
-		Iterator<Foeman2> es_iter2 = foemans2.iterator();
+		Iterator<Foeman2HP> es_iter2 = foemans2.iterator();
 		while(es_iter2.hasNext()){
-			Foeman2 eq2 = es_iter2.next();
+			Foeman2HP eq2 = es_iter2.next();
 			eq2.proceed();
 			
 			if(!eq2.isAlive()){
@@ -301,7 +316,7 @@ private void process3(){
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		Rectangle2D.Double br;
-		for(Foeman2 eqs : foemans2){
+		for(Foeman2HP eqs : foemans2){
 			er = eqs.getRectangle();
 			if(er.intersects(vr)){
 				eqs.hited();
@@ -319,13 +334,13 @@ private void process3(){
 
 private void process4(){
 		if(Math.random() < difficulty/80){
-			generateFoeman3();
+			generateFoeman3Nuclear();
 		}
 	
 		
-		Iterator<Foeman3> es_iter3 = foemans3.iterator();
+		Iterator<Foeman3Nuclear> es_iter3 = foemans3.iterator();
 		while(es_iter3.hasNext()){
-			Foeman3 eq3 = es_iter3.next();
+			Foeman3Nuclear eq3 = es_iter3.next();
 			eq3.proceed();
 			
 			if(!eq3.isAlive()){
@@ -354,7 +369,7 @@ private void process4(){
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		Rectangle2D.Double br;
-		for(Foeman3 eqs : foemans3){
+		for(Foeman3Nuclear eqs : foemans3){
 			er = eqs.getRectangle();
 			if(er.intersects(vr)){
 				eqs.hited();
@@ -371,13 +386,13 @@ private void process4(){
 
 private void process5(){
 		if(Math.random() < difficulty/40){
-			generateFoeman4();
+			generateFoeman4Boss();
 		}
 	
 		
-		Iterator<Foeman4> es_iter4 = foemans4.iterator();
+		Iterator<Foeman4Boss> es_iter4 = foemans4.iterator();
 		while(es_iter4.hasNext()){
-			Foeman4 eq4 = es_iter4.next();
+			Foeman4Boss eq4 = es_iter4.next();
 			eq4.proceed();
 			
 			if(!eq4.isAlive()){
@@ -419,7 +434,7 @@ private void process5(){
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		Rectangle2D.Double br;
-		for(Foeman4 eqs : foemans4){
+		for(Foeman4Boss eqs : foemans4){
 			er = eqs.getRectangle();
 			if(er.intersects(vr)){
 				eqs.hited();
@@ -472,7 +487,13 @@ private void process5(){
 		else {
 		
 		G_over = true;
-
+	
+		foemans4.clear();
+		foemans3.clear();
+		foemans2.clear();
+		foemans.clear();
+		enemies.clear();
+		gp.sprites.clear();
 		timercheck.stop();
 		timer.stop();
 		
@@ -481,16 +502,19 @@ private void process5(){
 		
 	}
 
-	public void dies(){
+	public void pause(){
 		
 		
-		G_over = true;
+		G_Pause = true;
 		timercheck.stop();
 		timer.stop();
-		JOptionPane.showMessageDialog(null,"Score: " +score +" Points");
+		JOptionPane.showMessageDialog(null,"Score: " +score +" Points" );
+		JOptionPane.showMessageDialog(null,"Please Press R to return" );
 		
 		
 	}
+
+
 
 	
 	public void lifePoint(){
@@ -513,9 +537,14 @@ private void process5(){
 		case KeyEvent.VK_SPACE:
 			fire();
 			break;
-		case KeyEvent.VK_S:
+		case KeyEvent.VK_C:
 			nuclears();
 			break;
+		case KeyEvent.VK_R:
+			if(G_Pause){
+				start();
+			}
+			break;	
 		case KeyEvent.VK_UP:
 			v.upDown(-1);
 			break;
@@ -599,10 +628,10 @@ private void process5(){
 		for(Foeman e2 : foemans){
 			e2.getHit();
 			}	
-		for(Foeman2 e3 : foemans2){
+		for(Foeman2HP e3 : foemans2){
 			e3.getHit();
 			}
-		for(Foeman3 e4 : foemans3){
+		for(Foeman3Nuclear e4 : foemans3){
 			e4.getHit();
 			}	
 

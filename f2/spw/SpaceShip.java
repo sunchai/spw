@@ -37,6 +37,10 @@ public class SpaceShip extends Sprite{
 			y = 600 - height;
 	}
 
+	public void setPosition(){
+		x = 180;
+		y = 500;
 
+	}
 
 }

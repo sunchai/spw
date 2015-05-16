@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.Image;
 
-public class Foeman4 extends Sprite{
+public class Foeman3Nuclear extends Sprite{
 	public static final int Y_TO_FADE = 400;
 	public static final int Y_TO_DIE = 600;
 	
@@ -15,7 +15,7 @@ public class Foeman4 extends Sprite{
 	
 
 
-	public Foeman4(int x, int y) {
+	public Foeman3Nuclear(int x, int y) {
 		super(x, y, 60, 90);
 		
 	}
@@ -33,7 +33,7 @@ public class Foeman4 extends Sprite{
 		}
 		//g.setColor(Color.RED);
 		//g.fillRect(x, y, width, height);
-		Image img = Toolkit.getDefaultToolkit().getImage("boss.png");
+		Image img = Toolkit.getDefaultToolkit().getImage("nu.png");
 			g.drawImage(img, x, y, width, height, null);
 	}
 

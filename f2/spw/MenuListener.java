@@ -16,14 +16,14 @@ public class MenuListener implements ActionListener{
     JMenuItem menuExit;
     JMenuItem menuCredit;
     JMenuItem menuRestart;
-    JMenuItem menuStop;
+    JMenuItem menuPause;
     GameEngine engine;
     
-    public MenuListener(JMenuItem menuExit,JMenuItem menuCredit,JMenuItem menuRestart,JMenuItem menuStop,GameEngine engine){
+    public MenuListener(JMenuItem menuExit,JMenuItem menuCredit,JMenuItem menuRestart,JMenuItem menuPause,GameEngine engine){
         this.menuCredit = menuCredit;
         this.menuExit = menuExit;
         this.menuRestart = menuRestart;
-        this.menuStop = menuStop;
+        this.menuPause = menuPause;
         this.engine = engine;
     }
 
@@ -40,14 +40,12 @@ public class MenuListener implements ActionListener{
             JOptionPane.showMessageDialog(null,"Mr.Sunchai Sutjarit 5410110535");
         }
         if(e.getSource() == menuRestart){
-            engine.start();
-            engine.setHP(100);
-            engine.setCombo(0);
-            engine.setNc(0);
+            engine.playAg();
+            
            
         }
-        if(e.getSource() == menuStop){
-            engine.dies();
+        if(e.getSource() == menuPause){
+            engine.pause();
         }
     }
 }

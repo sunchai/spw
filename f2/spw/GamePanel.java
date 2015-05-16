@@ -32,7 +32,7 @@ public class GamePanel extends JPanel {
 		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
 		//big.setBackground(Color.BLACK);
-		big.drawImage(imgBackground, 0, 0, 400, 600,null);
+		//big.drawImage(imgBackground, 0, 0, 400, 600,null);
 	}
 
 	public void updateGameUI(GameReporter reporter){
@@ -46,7 +46,9 @@ public class GamePanel extends JPanel {
 		big.drawString(String.format("Nuclear %03d", reporter.getNc()), 40, 60);
 
 		if(reporter.getHp()==0){
-
+		
+	
+		
 		big.clearRect(0, 0, 400, 600);
 		big.setColor(Color.WHITE);	
 
