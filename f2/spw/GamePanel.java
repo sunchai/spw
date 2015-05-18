@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel {
 	
 	private BufferedImage bi;
+	private int hp;
 	private Image imgBackground;	
 	Graphics2D big;
 	ArrayList<Sprite> sprites = new ArrayList<Sprite>();
@@ -45,10 +46,11 @@ public class GamePanel extends JPanel {
 		big.drawString(String.format("Life %03d", reporter.getLp()), 40, 40);
 		big.drawString(String.format("Nuclear %03d", reporter.getNc()), 40, 60);
 
-		if(reporter.getHp()==0){
+		hp = reporter.getHp();
+
+		System.out.println(""+"/"+hp);
 		
-	
-		
+		if(hp<=0){
 		big.clearRect(0, 0, 400, 600);
 		big.setColor(Color.WHITE);	
 
@@ -57,12 +59,13 @@ public class GamePanel extends JPanel {
 		big.drawString("Please ENTER to Play again",100,490);
 		
 
-		}
+		} 
 
 		for(Sprite s : sprites){
 			s.draw(big);
 		}		
 		repaint();
+
 
 
 
@@ -87,6 +90,8 @@ public class GamePanel extends JPanel {
 		g2d.drawImage(bi, null, 0, 0);
 	}
 
-
-
+	public void gamehp(int hp){
+		this.hp=hp;
+	}
+	
 }

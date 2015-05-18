@@ -31,6 +31,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private double difficulty = 0.1; 
 	private int hp = 100;
 	private int count = 0;
+	private int c = 0;
 	private int lp = 0;
 	private int nuclear = 0;
 	private boolean G_over=false;
@@ -55,7 +56,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			}
 		});
 		
-		timer = new Timer(50, new ActionListener() {
+		timer = new Timer(50, new ActionListener() { //speed
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 		process();
@@ -333,7 +334,7 @@ private void process3(){
 
 
 private void process4(){
-		if(Math.random() < difficulty/80){
+		if(Math.random() < difficulty/50){
 			generateFoeman3Nuclear();
 		}
 	
@@ -383,9 +384,9 @@ private void process4(){
 	}
 
 
-
+//
 private void process5(){
-		if(Math.random() < difficulty/40){
+		if(Math.random() < difficulty/10){
 			generateFoeman4Boss();
 		}
 	
@@ -410,7 +411,7 @@ private void process5(){
 			else {
 				
 				score += 10000;
-					count += 100;
+				count += 100;
 				}
 				
 			}
@@ -439,12 +440,12 @@ private void process5(){
 			if(er.intersects(vr)){
 				eqs.hited();
 				bossAtHP();
+				//v.width = 100; //drop size when intersects
+				//v.height = 20;
 				combo = 0;
 				
 				return;
 			}
-
-			
 
 
 			for(Bullet b : bullets){
@@ -456,20 +457,23 @@ private void process5(){
 				}				
 			}
 		}
+
 	}
 
-
-
 	private void bossAtHP(){
-            hp -= 50;
-            if(hp <= 0){
+            hp -= 40;
+            if(hp ==0){         	
                 die();
-                
+            }else if(hp<0){
+            	hp=0;
+            	die();
             }
+            gp.updateGameUI(this);
 	}
 	public void minus(){
 		hp -= 10 ;
 		if(hp <= 0){
+			
 			die();
 		}
 	
@@ -485,9 +489,10 @@ private void process5(){
 			lp -=1;
 		}
 		else {
-		
+
 		G_over = true;
-	
+		
+		
 		foemans4.clear();
 		foemans3.clear();
 		foemans2.clear();
@@ -634,9 +639,12 @@ private void process5(){
 		for(Foeman3Nuclear e4 : foemans3){
 			e4.getHit();
 			}	
+			
 
 		}
 	}
+	
+
 	
 
 	@Override
